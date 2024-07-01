@@ -58,4 +58,7 @@ test('should book hotel',async({page})=>{
     await stripeFrame.locator('[placeholder="ZIP"]').fill("12345");
     await page.getByRole("button",{name:"Confirm and Pay"}).click()
     await expect(page.getByText("Payment Successful,Booking Saved")).toBeVisible({timeout: 120000});
+    await page.getByRole("link",{name:"My Bookings"}).click();
+    await expect(page.getByText("test hotel 1")).toBeVisible();
 })
+
