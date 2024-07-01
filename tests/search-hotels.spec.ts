@@ -37,3 +37,25 @@ test("Should show hotel details",async({page})=>{
     await expect(page).toHaveURL('http://localhost:5173/detail/667412a87f1d7087f7338716');
     await expect(page.getByRole("button",{name:"Book Now"})).toBeVisible();
 })
+
+test('should book hotel',async({page})=>{
+    await page.goto(UI_URL);
+    await page.getByPlaceholder("Where are you going?").fill("Gurgaon");
+    const date=new Date();
+    date.setDate(date.getDate()+3);
+    const formattedDate=date.toISOString().split('T')[0]
+    await page.getByPlaceholder("Check-out Date").fill(formattedDate);
+    await page.getByRole("button",{name:"Search"}).click(); 
+    await page.getByText("test hotel 1").click();
+    await page.getByRole("button",{name:"Book Now"}).click();
+    await expect(page.getByText("Total Amount: Rs 366.00")).toBeVisible();
+    const stripeFrame=page.frameLocator('iframe').first();
+    await stripeFrame
+        .locator('[placeholder="Card number"]')
+        .fill("4242424242424242");
+    await stripeFrame.locator('[placeholder="MM / YY"]').fill("08/30");
+    await stripeFrame.locator('[placeholder="CVC"]').fill("123");
+    await stripeFrame.locator('[placeholder="ZIP"]').fill("12345");
+    await page.getByRole("button",{name:"Confirm and Pay"}).click()
+    await expect(page.getByText("Payment Successful,Booking Saved")).toBeVisible({timeout: 120000});
+})

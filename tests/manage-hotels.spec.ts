@@ -46,7 +46,7 @@ test('should allow user to view hotels',async({page})=>{
     await expect(page.getByText("ammama vxczxmmkjkn")).toBeVisible()
     await expect(page.getByText("Noida,India")).toBeVisible()
     await expect(page.getByText("Business")).toBeVisible()
-    await expect(page.getByText("$122 per night")).toBeVisible()
+    await expect(page.getByText("Rs 122 per night")).toBeVisible()
     await expect(page.getByText("5 Adults, 5 Children")).toBeVisible()
     await expect(page.getByText("5 Star Rating")).toBeVisible()
     await expect(page.getByRole("link",{name:"View Details"}).first()).toBeVisible()
